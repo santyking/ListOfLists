@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "list-of-lists-client-side-solution",
+    "id": "51112dd8-b3a6-43a2-bceb-aa51a9706ff6",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.18.2"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "list-of-lists description"
+      },
+      "longDescription": {
+        "default": "list-of-lists description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "list-of-lists Feature",
+        "description": "The feature that activates elements of the list-of-lists solution.",
+        "id": "c4eec4d8-4018-4793-95cc-edf31c0847ee",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/list-of-lists.sppkg"
+  }
+}
