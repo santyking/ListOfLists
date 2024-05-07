@@ -10,7 +10,8 @@ import { escape } from '@microsoft/sp-lodash-subset';
 import styles from './ListOfListsWebPart.module.scss';
 import * as strings from 'ListOfListsWebPartStrings';
 import { iSPListItem } from './iSPListItem';
-import {SPHttpClient} from '@microsoft/sp-http';
+import { SPHttpClient } from '@microsoft/sp-http';
+import { List } from '@fluentui/react';
 
 export interface IListOfListsWebPartProps {
   description: string;
@@ -22,22 +23,34 @@ export default class ListOfListsWebPart extends BaseClientSideWebPart<IListOfLis
   private _environmentMessage: string = '';
 
   public render(): void {
-    this.domElement.innerHTML = `
-    <section class="${styles.listOfLists} ${!!this.context.sdks.microsoftTeams ? styles.teams : ''}">
-    
-    </section>`;
-  }
+    let listItems: string = "";
+    this._getSharePointLists().then(lists => {
+      lists.forEach(list => {
+        listItems += `
+    <div>
+    <img src='${list.ImageUrl}'/>&nbsp;${list.Title}<br/>
+    ID: ${list.Id}<br/>
+    </div><hr/>`;
+      });
+      this.domElement.innerHTML = `
+      <div class="${styles.getlistofalllists}">        
+            <h1>All SharePoint Lists:</h1><div>${listItems}</div>
+            </div>
+          
+        
+      </div>`;
+    }
 
-  protected onInit(): Promise<void> {
-    return this._getEnvironmentMessage().then(message => {
-      this._environmentMessage = message;
-    });
-  }
+  protected onInit(): Promise < void> {
+      return this._getEnvironmentMessage().then(message => {
+        this._environmentMessage = message;
+      });
+    }
 
 
 
-  private _getEnvironmentMessage(): Promise<string> {
-    if (!!this.context.sdks.microsoftTeams) { // running in Teams, office.com or Outlook
+  private _getEnvironmentMessage(): Promise < string > {
+      if(!!this.context.sdks.microsoftTeams) { // running in Teams, office.com or Outlook
       return this.context.sdks.microsoftTeams.teamsJs.app.getContext()
         .then(context => {
           let environmentMessage: string = '';
@@ -106,4 +119,5 @@ export default class ListOfListsWebPart extends BaseClientSideWebPart<IListOfLis
       ]
     };
   }
+}
 }
