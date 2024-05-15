@@ -28,19 +28,31 @@ export default class ListOfListsWebPart extends BaseClientSideWebPart<IListOfLis
       lists.forEach(list => {
         listItems += `
     <div>
-    <img src='${list.ImageUrl}'/>&nbsp;${list.Title}<br/>
+    ${list.Title}<br/>
     ID: ${list.Id}<br/>
     </div><hr/>`;
       });
       this.domElement.innerHTML = `
       <div class="${styles.getlistofalllists}">        
-            <h1>All SharePoint Lists:</h1><div>${listItems}</div>
+            <h1>All SharePoint Lists:</h1>
+            <div>${listItems}</div>
             </div>
-          
-        
       </div>`;
-    }
+    });
+  }
 
+  private _getSharePointLists(): Promise<
+    []> {
+      const url: string = this.context.pageContext.web.absoluteUrl + "/_api/web/lists";
+      return this.context.spHttpClient.get(url, SPHttpClient.configurations.v1)
+        .then(response => {
+          return response.json();
+        })
+        .then(json => {
+          return json.value;
+        }) as Promise<ISPList[]>;
+    }
+    
   protected onInit(): Promise < void> {
       return this._getEnvironmentMessage().then(message => {
         this._environmentMessage = message;
@@ -119,5 +131,4 @@ export default class ListOfListsWebPart extends BaseClientSideWebPart<IListOfLis
       ]
     };
   }
-}
 }
